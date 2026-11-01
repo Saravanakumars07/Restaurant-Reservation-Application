@@ -1,24 +1,38 @@
-export default function MyBookings(){
-  const bookings = JSON.parse(localStorage.getItem('bookings')||'[]')
+import React from "react";
+import { useEffect, useState } from "react";
+
+const MyBookings = () => {
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("bookings") || "[]");
+    setBookings(data);
+  }, []);
+
   return (
-    <div style={{display:'flex',gap:'20px',padding:'20px 5%'}}>
-      <div style={{flex:2}}>
+    <div>
+      <header>
         <h1>My Bookings</h1>
-        {bookings.length===0 ? <p>No bookings yet</p> : bookings.map(b=>(
-          <div key={b.id} className="restaurant-card">
-            <div>
-              <h3>{b.restaurantName}</h3>
-              <p>{b.address}</p>
-              <p>Date: {b.date} | Time: {b.time}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div style={{flex:1,background:'#fff3e0',padding:'20px',borderRadius:'12px',height:'400px'}}>
-        <h3>Special Offer</h3>
-        <p>50% OFF on next booking</p>
-        <img src="https://cdn-icons-png.flaticon.com/512/706/706164.png" width="120" alt="offer"/>
-      </div>
+        <nav>
+          <a href="/">Home</a>
+        </nav>
+      </header>
+      <main>
+        <h2>My Bookings</h2>
+        {bookings.length === 0 ? (
+          <p>No bookings yet</p>
+        ) : (
+          <ul>
+            {bookings.map((b, i) => (
+              <li key={i}>
+                {b.restaurantName || b.name} - {b.date} at {b.timeSlot || b.time}
+              </li>
+            ))}
+          </ul>
+        )}
+      </main>
     </div>
-  )
-}
+  );
+};
+
+export default MyBookings;
