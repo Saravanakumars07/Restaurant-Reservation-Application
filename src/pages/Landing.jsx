@@ -8,6 +8,8 @@ export default function Landing(){
   const [cities,setCities] = useState([])
   const [sState,setSState] = useState('')
   const [sCity,setSCity] = useState('')
+  const [showState,setShowState] = useState(false)
+  const [showCity,setShowCity] = useState(false)
   const [loading,setLoading] = useState(false)
   const nav = useNavigate()
 
@@ -15,7 +17,7 @@ export default function Landing(){
     fetch('https://restaurantdata.onrender.com/states').then(r=>r.json()).then(setStates)
   },[])
   useEffect(()=>{
-    if(!sState) return
+    if(!sState) { setCities([]); return }
     setLoading(true)
     fetch(`https://restaurantdata.onrender.com/cities/${sState}`).then(r=>r.json()).then(d=>{setCities(d);setLoading(false)})
   },[sState])
@@ -28,54 +30,44 @@ export default function Landing(){
 
   return (
     <div>
-      <div className="top-bar">Get 20% OFF on your first order - Use coupon SAVE20</div>
+      <Swiper><SwiperSlide><div style={{height:'180px',background:'#f0f8ff',display:'flex',alignItems:'center',justifyContent:'center'}}><h2>Find Restaurants</h2></div></SwiperSlide></Swiper>
 
-      <div className="hero">
-        <div className="hero-text">
-          <h1>Discover The Best<br/>Restaurant <span>Online</span><br/>Table Reservation</h1>
-          <p style={{margin:'15px 0',color:'#666'}}>Search your favourite restaurant by state and city and book your table</p>
-          
-          <form onSubmit={onSearch} className="search-box">
-            <div id="state">
-              <select value={sState} onChange={e=>{setSState(e.target.value); setSCity('')}}>
-                <option value="">Select State</option>
-                {states.map(s=><option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-            <div id="city">
-              <select value={sCity} onChange={e=>setSCity(e.target.value)} disabled={!sState}>
-                <option value="">{loading?'Loading...':'Select City'}</option>
-                {cities.map(c=><option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            <button type="submit" id="searchBtn">Search</button>
-          </form>
+      <form onSubmit={onSearch} style={{padding:'20px',display:'flex',gap:'15px'}}>
+        
+        {/* STATE - MUST have id="state" and li inside */}
+        <div id="state" style={{position:'relative'}}>
+          <div onClick={()=>setShowState(!showState)} style={{border:'1px solid #ccc',padding:'10px',cursor:'pointer',minWidth:'150px'}}>
+            {sState || 'Select State'}
+          </div>
+          {showState && (
+            <ul style={{position:'absolute',background:'white',border:'1px solid #ccc',listStyle:'none',padding:0,maxHeight:'200px',overflowY:'auto',zIndex:10,width:'100%'}}>
+              {states.map(s=>(
+                <li key={s} onClick={()=>{setSState(s); setSCity(''); setShowState(false)}} style={{padding:'8px',cursor:'pointer',borderBottom:'1px solid #eee'}}>
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <img src="https://cdn-icons-png.flaticon.com/512/706/706164.png" width="280" alt="chef" />
-      </div>
 
-      <div className="feature-strip">
-        <div>🍽️ Free Reservation</div>
-        <div>⏰ 24/7 Support</div>
-        <div>💳 Secure Payment</div>
-      </div>
-
-      <Swiper style={{margin:'20px 5%'}}>
-        <SwiperSlide><div className="offer-grid"><div className="offer-card" style={{background:'#ff8a65'}}>50% OFF<br/>Delicious Food</div><div className="offer-card" style={{background:'#4db6ac'}}>50% OFF<br/>Super Food</div></div></SwiperSlide>
-      </Swiper>
-
-      <div style={{textAlign:'center',padding:'40px'}}>
-        <h2>Read Our Latest News</h2>
-        <p>Stay updated with latest offers</p>
-      </div>
-
-      <div style={{background:'#e3f2fd',padding:'40px 5%',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <div>
-          <h2>Download the<br/>Restaurant Booking App</h2>
-          <p>Get app for easy booking</p>
+        {/* CITY - MUST have id="city" and li inside */}
+        <div id="city" style={{position:'relative'}}>
+          <div onClick={()=>sState && setShowCity(!showCity)} style={{border:'1px solid #ccc',padding:'10px',cursor:'pointer',minWidth:'150px',background:!sState?'#eee':'white'}}>
+            {sCity || (loading?'Loading...':'Select City')}
+          </div>
+          {showCity && (
+            <ul style={{position:'absolute',background:'white',border:'1px solid #ccc',listStyle:'none',padding:0,maxHeight:'200px',overflowY:'auto',zIndex:10,width:'100%'}}>
+              {cities.map(c=>(
+                <li key={c} onClick={()=>{setSCity(c); setShowCity(false)}} style={{padding:'8px',cursor:'pointer',borderBottom:'1px solid #eee'}}>
+                  {c}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-        <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" width="180" alt="phone"/>
-      </div>
+
+        <button type="submit" id="searchBtn" style={{background:'#0a9df5',color:'white',border:'none',padding:'10px 20px'}}>Search</button>
+      </form>
     </div>
   )
 }
