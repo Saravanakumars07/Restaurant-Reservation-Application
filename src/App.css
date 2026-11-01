@@ -1,0 +1,17 @@
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+.top-bar { background:#0a9df5; color:white; padding:8px; text-align:center; font-size:13px; }
+.navbar { display:flex; justify-content:space-between; align-items:center; padding:15px 5%; background:white; box-shadow:0 2px 5px #eee; position:sticky; top:0; z-index:10; }
+.navbar a { text-decoration:none; color:#333; margin:0 15px; font-weight:500; }
+.hero { display:flex; align-items:center; justify-content:space-between; padding:40px 5%; background:#f8fbff; }
+.hero-text h1 { font-size:42px; line-height:1.2; }
+.hero-text span { color:#0a9df5; }
+.search-box { background:white; padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1); display:flex; gap:10px; margin-top:20px; }
+.search-box select { padding:12px; border:1px solid #ddd; border-radius:8px; width:180px; }
+#searchBtn { background:#0a9df5; color:white; border:none; padding:12px 25px; border-radius:8px; cursor:pointer; font-weight:bold; }
+.feature-strip { display:flex; justify-content:space-around; padding:20px 5%; background:white; }
+.offer-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:20px 5%; }
+.offer-card { height:250px; border-radius:15px; display:flex; align-items:center; padding:30px; background-size:cover; color:white; font-weight:bold; font-size:22px; }
+.footer { background:#0a9df5; color:white; padding:40px 5%; margin-top:40px; }
+.btn-blue { background:#0a9df5; color:white; border:none; padding:10px 20px; border-radius:6px; }
+.restaurant-card { border:1px solid #eee; border-radius:12px; padding:15px; display:flex; justify-content:space-between; background:white; margin-bottom:15px; }
+@media(max-width:768px){ .hero{flex-direction:column} .offer-grid{grid-template-columns:1fr} .search-box{flex-direction:column} }
